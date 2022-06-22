@@ -1,0 +1,5 @@
+.coverage
+coverage.xml
+.pytest_cache
+pygieons.egg-info
+build
