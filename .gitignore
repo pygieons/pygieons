@@ -5,3 +5,5 @@ pygieons.egg-info
 build
 .idea
 __pycache__
+dist
+*.egg-info
