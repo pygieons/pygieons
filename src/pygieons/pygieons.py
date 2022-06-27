@@ -65,13 +65,16 @@ def assign_categories(nodes):
     return nodes
 
 
-def get_number_of_pypi_downloads(nodes, sleep_time=0.25):
+def get_number_of_pypi_downloads(nodes, sleep_time=0.25, log=True):
     """Finds out the number of monthly downloads according to pypistats"""
-    print("Find out the number of monthly downloads from PyPi for the libraries ..")
+    disable = True
+    if log:
+        print("Find out the number of monthly downloads from PyPi for the libraries ..")
+        disable = False
     nodes["PyPi downloads (monthly)"] = None
 
     # Update downloads
-    for idx, row in tqdm(nodes.iterrows(), total=nodes.shape[0]):
+    for idx, row in tqdm(nodes.iterrows(), total=nodes.shape[0], disable=disable):
         name = row["id"]
         if name in NO_DISTRO:
             continue
@@ -86,11 +89,14 @@ def get_number_of_pypi_downloads(nodes, sleep_time=0.25):
     return nodes
 
 
-def get_project_urls(nodes):
+def get_project_urls(nodes, log=True):
     """Finds out the Home and Documentation URLs from PyPi project page"""
-    print("Extract project URLs ..")
+    disable = True
+    if log:
+        print("Extract project URLs ..")
+        disable = False
 
-    for idx, node in tqdm(nodes.iterrows(), total=nodes.shape[0]):
+    for idx, node in tqdm(nodes.iterrows(), total=nodes.shape[0], disable=disable):
         url = node["url"]
         name = node["id"]
 
@@ -149,6 +155,11 @@ def prepare_html_links_and_badges(nodes):
     nodes["Conda-forge latest release"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
                                                                       f'<img src="{conda_root}/{x}/badges/latest_release_date.svg" '
                                                                       f'alt="Conda latest release" height="18"></a>')
+
+    nodes["License"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
+                                                   f'<img src="{conda_root}/{x}/badges/license.svg" '
+                                                   f'alt="License" height="18"></a>')
+
     nodes["Name"] = "<strong>" + nodes["id"] + "</strong>"
 
     if isinstance(nodes.iloc[0]["PyPi downloads (monthly)"], int):
@@ -276,22 +287,15 @@ def prepare_network_plot(nt, nodes, edges, label_fontsize, font_family, edge_col
     return nt
 
 
-def prepare_table_plot(nodes,
-                       cols=[
-                           "Name",
-                           "Homepage",
-                           "Documentation",
-                           "PyPi version",
-                           "PyPi downloads (monthly)",
-                           "Conda-forge version",
-                           "Conda-forge downloads",
-                           "Conda-forge latest release"
-                       ]
-                       ):
+def prepare_table_plot(nodes, cols):
     """
     Prepares a pandas.HTML table for the Python GIS libraries that are currently listed in pygieons.
     """
-    align_center_cols = ["Homepage", "Documentation"]
+    align_center_cols = ["Homepage"]
+
+    if "Documentation" in cols:
+        align_center_cols.append("Documentation")
+
     return HTML(nodes[cols].style.set_properties(subset=align_center_cols, **{"text-align": "center"})
                 .hide_index()
                 .to_html()
@@ -307,8 +311,20 @@ class Table:
         return self.tableview
 
 
+class Net:
+    def __init__(self, network_view):
+        """A simple wrapper to imitate similar behavior as with pyvis.Network visualization."""
+        self.network_view = network_view
+
+    def show(self):
+        return HTML(self.network_view.generate_html(notebook=True))
+
+    def save(self, output_fp=None):
+        self.network_view.write_html(output_fp)
+
+
 class Ecosystem:
-    def __init__(self, plot_type="all", keep_all=False):
+    def __init__(self, plot_type="all", keep_all=False, log=True):
         """
         A class for parsing and visualization information about Python GIS ecosystem
 
@@ -320,11 +336,14 @@ class Ecosystem:
             Possible values are: "all", "vector", "raster", "generic", "vector+generic", "raster+generic".
         keep_all : bool
             If True, also packages that are not available from PyPi or which are not maintained will be kept.
+        log: bool
+            If True, will print messages during process.
         """
         self.nodes = None
         self.edges = None
         self.plot_type = plot_type
         self.keep_all = keep_all
+        self.log = log
 
     def prepare_data(self, parse_urls=False):
         """Loads the data and filters it if needed."""
@@ -356,11 +375,11 @@ class Ecosystem:
 
         # Retrieve the number of downloads
         if "downloads" not in nodes.columns.to_list():
-            nodes = get_number_of_pypi_downloads(nodes)
+            nodes = get_number_of_pypi_downloads(nodes, log=self.log)
 
         # Retrieve the project URLs (homepage and docs URL)
         if parse_urls:
-            nodes = get_project_urls(nodes)
+            nodes = get_project_urls(nodes, log=self.log)
 
         # Update attributes
         self.nodes = nodes
@@ -372,6 +391,8 @@ class Ecosystem:
                     label_fontsize=24,
                     font_family="verdana",
                     color_palette=None,
+                    fig_width="900px",
+                    fig_height="700px",
                     show_buttons=False,
                     ):
         """
@@ -391,6 +412,10 @@ class Ecosystem:
         color_palette : list of hex colors
             By default the color are based on palettable color schemes, but you can customize the colors by passing a list of
             four colors as hex codes.
+        fig_width : str
+            Width of the figure in pixels.
+        fig_height : str
+            Height of the figure in pixels.
         show_buttons : bool
             If True, adds a control panel underneath the visualization which allows you to play around with different settings for the graph.
         """
@@ -408,11 +433,11 @@ class Ecosystem:
             edge_color = "lightblue"
             if color_palette is None:
                 color_palette = palette.cartocolors.qualitative.Pastel_4.hex_colors
-            nt = Network('1000px', '1500px', notebook=True, bgcolor='black', font_color='white',
+            nt = Network(widht=fig_width, height=fig_height, notebook=True, bgcolor='black', font_color='white',
                          directed=directed_graph)
         else:
             edge_color = "grey"
-            nt = Network('1000px', '1500px', notebook=True, directed=directed_graph)
+            nt = Network(width=fig_width, height=fig_height, notebook=True, directed=directed_graph)
 
             # Use the first 4 colours from GrandBudapest5_5 which gives quite nice appearance
             if color_palette is None:
@@ -433,13 +458,13 @@ class Ecosystem:
 
         if show_buttons:
             nt.show_buttons(filter_=['physics', 'nodes'])
-        return nt
+        return Net(network_view=nt)
 
     def prepare_table(self,
                       cols=[
                           "Name",
                           "Homepage",
-                          "Documentation",
+                          "License",
                           "PyPi version",
                           "PyPi downloads (monthly)",
                           "Conda-forge version",
