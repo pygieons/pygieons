@@ -5,21 +5,25 @@ import numpy as np
 import palettable as palette
 from pyvis.network import Network
 import time
+import requests
+from bs4 import BeautifulSoup
+from IPython.display import HTML
 from tqdm.auto import tqdm
+
 tqdm.pandas()
 
 # Load edges
 from .ecosystem_connections import LINKS
 # Load nodes according to categories
 from .ecosystem_pkgs import (PKGS,
-                            NO_DISTRO,
-                            GENERIC_CORE,
-                            GIS_CORE,
-                            GENERIC_VISUALS,
-                            NOT_ACTIVE,
-                            PYGIS_CORE,
-                            FUNDAMENTAL_CORE
-                            )
+                             NO_DISTRO,
+                             GENERIC_CORE,
+                             GIS_CORE,
+                             GENERIC_VISUALS,
+                             NOT_ACTIVE,
+                             PYGIS_CORE,
+                             FUNDAMENTAL_CORE
+                             )
 
 # These packages won't be plotted
 SKIPPED = NO_DISTRO + NOT_ACTIVE
@@ -35,39 +39,121 @@ def load_nodes_and_edges():
     node_list = [{"id": pkg, "category": None, "url": f"https://pypi.org/project/{pkg}/"} for pkg in pkgs]
     nodes = pd.DataFrame(node_list)
 
+    # Sort
+    nodes = nodes.sort_values(by=["id"]).copy()
+
     return nodes, edges
 
 
-def assign_categories(nodes):
-    """Adds a column to nodes DataFrame about subcategories"""
-    # Update categories
-    for category, data in PKGS.items():
-        nodes.loc[nodes["id"].isin(data["pkgs"]), "category"] = category
+def clean_nodes(nodes):
+    """Removes pkgs which are not available from PyPi or which are not maintained anymore."""
+    nodes = nodes.loc[~nodes["id"].isin(NOT_ACTIVE + NO_DISTRO)].copy()
     return nodes
 
 
-def get_number_of_pypi_downloads(nodes, sleep_time=0.5):
-    """Finds out the number of monthly downloads according to pypistats"""
-    print("Find out the number of monthly downloads from PyPi for the libraries ..")
-    nodes["downloads"] = None
+def assign_categories(nodes):
+    """Adds a column to nodes DataFrame about categories and subcategories"""
+    # Update categories
+    for category, data in PKGS.items():
+        nodes.loc[nodes["id"].isin(data["pkgs"]), "category"] = category
 
-    # Update downloads
-    for idx, row in tqdm(nodes.iterrows(), total=nodes.shape[0]):
+    for idx, row in nodes.iterrows():
         name = row["id"]
         category = row["category"]
         nodes.loc[idx, "subcategory"] = get_subcategory(name, category, PKGS)
 
+    return nodes
+
+
+def get_number_of_pypi_downloads(nodes, sleep_time=0.25):
+    """Finds out the number of monthly downloads according to pypistats"""
+    print("Find out the number of monthly downloads from PyPi for the libraries ..")
+    nodes["PyPi downloads (monthly)"] = None
+
+    # Update downloads
+    for idx, row in tqdm(nodes.iterrows(), total=nodes.shape[0]):
+        name = row["id"]
         if name in NO_DISTRO:
             continue
-
         r = pypistats.recent(name, "month", format="json")
         downloads = json.loads(r)["data"]["last_month"]
-        nodes.loc[idx, "downloads"] = downloads
+        nodes.loc[idx, "PyPi downloads (monthly)"] = downloads
         time.sleep(sleep_time)
 
     # Scale the download values by taking a log
-    nodes["log10_downloads"] = np.log10(nodes["downloads"].astype(float))
-    nodes["log2_downloads"] = np.log2(nodes["downloads"].astype(float))
+    nodes["log10_downloads"] = np.log10(nodes["PyPi downloads (monthly)"].astype(float))
+    nodes["log2_downloads"] = np.log2(nodes["PyPi downloads (monthly)"].astype(float))
+    return nodes
+
+
+def get_project_urls(nodes):
+    """Finds out the Home and Documentation URLs from PyPi project page"""
+    print("Extract project URLs ..")
+
+    for idx, node in tqdm(nodes.iterrows(), total=nodes.shape[0]):
+        url = node["url"]
+        name = node["id"]
+
+        if name in NO_DISTRO:
+            continue
+
+        # Retrieve data
+        response = requests.get(url)
+
+        # Make soup
+        soup = BeautifulSoup(response.text, features="lxml")
+
+        # Find links to homepage and docs
+        project_links = soup.find_all("div", {'class': 'sidebar-section'})[1].find_all("a", href=True)
+        homepage = None
+        docs_url = None
+
+        for link in project_links:
+            if link.text.strip().lower().startswith("home"):
+                homepage = link["href"]
+            elif link.text.strip().lower().startswith("doc"):
+                docs_url = link["href"]
+
+        nodes.loc[idx, "homepage_url"] = homepage
+        nodes.loc[idx, "docs_url"] = docs_url
+        nodes.loc[idx, "Homepage"] = f'<a href="{homepage}">🏠</a>'
+        if docs_url is not None:
+            nodes.loc[idx, "Documentation"] = f'<a href="{docs_url}">📖</a>'
+        else:
+            nodes.loc[idx, "Documentation"] = 'NA'
+        time.sleep(0.25)
+    return nodes
+
+
+def prepare_html_links_and_badges(nodes):
+    """Prepares HTML links and badges for Python projects"""
+    pypi_root = "https://pypi.org/project"
+    pypistats_root = "https://pypistats.org/packages"
+    fury_root = "https://badge.fury.io/py"
+    shields_root = "https://img.shields.io/pypi/dm"
+    conda_root = "https://anaconda.org/conda-forge"
+    nodes['pypi_link'] = nodes["id"].apply(lambda x: f'{pypi_root}/{x}/')
+    nodes["PyPi version"] = nodes['id'].apply(lambda x: f'<a href="{pypi_root}/{x}/">'
+                                                        f'<img src="{fury_root}/{x}.svg" '
+                                                        f'alt="PyPI version" height="18"></a>')
+    nodes["PyPi downloads"] = nodes['id'].apply(lambda x: f'<a href="{pypistats_root}/{x}/">'
+                                                          f'<img src="{shields_root}/{x}'
+                                                          f'?color=yellow&label=Downloads" '
+                                                          f'alt="PyPI downloads" height="18"></a>')
+    nodes["Conda-forge version"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
+                                                               f'<img src="{conda_root}/{x}/badges/version.svg" '
+                                                               f'alt="Conda version" height="18"></a>')
+    nodes["Conda-forge downloads"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
+                                                                 f'<img src="{conda_root}/{x}/badges/downloads.svg" '
+                                                                 f'alt="Conda downloads" height="18"></a>')
+    nodes["Conda-forge latest release"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
+                                                                      f'<img src="{conda_root}/{x}/badges/latest_release_date.svg" '
+                                                                      f'alt="Conda latest release" height="18"></a>')
+    nodes["Name"] = "<strong>" + nodes["id"] + "</strong>"
+
+    if isinstance(nodes.iloc[0]["PyPi downloads (monthly)"], int):
+        nodes["PyPi downloads (monthly)"] = nodes["PyPi downloads (monthly)"].map('{:,.0f}'.format)
+
     return nodes
 
 
@@ -124,17 +210,10 @@ def get_node_size(nodes, name, size_column):
     return nodes.loc[nodes["id"] == name][size_column].values[0]
 
 
-def prepare_network_plot(nt, nodes, edges, plot_type, label_fontsize, font_family, edge_color, color_palette):
+def prepare_network_plot(nt, nodes, edges, label_fontsize, font_family, edge_color, color_palette):
     """Prepares a pyvis network that can be used to visualize it"""
     # Take a copy of nodes
     nodes_copy = nodes.copy()
-
-    if plot_type == "all":
-        pass
-    elif plot_type == "vector":
-        nodes_copy = nodes_copy.loc[nodes_copy["subcategory"].isin(["vector", "generic"])].copy()
-    elif plot_type == "raster":
-        nodes_copy = nodes_copy.loc[nodes_copy["subcategory"].isin(["raster", "generic"])].copy()
 
     # Pkg names
     pkgs = nodes_copy["id"].to_list()
@@ -197,71 +276,196 @@ def prepare_network_plot(nt, nodes, edges, plot_type, label_fontsize, font_famil
     return nt
 
 
-def prepare_net(dark_background=False,
-                directed_graph=True,
-                label_fontsize=24,
-                font_family="verdana",
-                plot_type="all",
-                color_palette=None,
-                show_buttons=False,
-                ):
+def prepare_table_plot(nodes,
+                       cols=[
+                           "Name",
+                           "Homepage",
+                           "Documentation",
+                           "PyPi version",
+                           "PyPi downloads (monthly)",
+                           "Conda-forge version",
+                           "Conda-forge downloads",
+                           "Conda-forge latest release"
+                       ]
+                       ):
     """
-    Prepares a pyvis.Network for the Python GIS libraries that are currently listed in pygieons.
-
-    Parameters
-    ==========
-
-    directed_graph : bool
-        Treat the network as directed. If True, will add arrows showing the direction of the link.
-    dark_background : bool
-        If True, will produce the visualization with dark background.
-    label_fontsize : int
-        Fontsize for the labels.
-    font_family : str
-        Font family applied to labels. Possible values "arial", "verdana", "tahoma".
-    plot_type : str
-        This can be used to specify if you want to plot all packages in same figure, or only vector or raster.
-        Possible values are: "all", "vector", "raster".
-    color_palette : list of hex colors
-        By default the color are based on palettable color schemes, but you can customize the colors by passing a list of
-        four colors as hex codes.
-    show_buttons : bool
-        If True, adds a control panel underneath the visualization which allows you to play around with different settings for the graph.
+    Prepares a pandas.HTML table for the Python GIS libraries that are currently listed in pygieons.
     """
+    align_center_cols = ["Homepage", "Documentation"]
+    return HTML(nodes[cols].style.set_properties(subset=align_center_cols, **{"text-align": "center"})
+                .hide_index()
+                .to_html()
+                )
 
-    # ===============
-    # PARAMS
-    # ===============
 
-    # Load nodes and edges
-    nodes, edges = load_nodes_and_edges()
+class Table:
+    def __init__(self, tableview):
+        """A simple wrapper to imitate similar behavior as with pyvis.Network visualization."""
+        self.tableview = tableview
 
-    # Assign categories
-    nodes = assign_categories(nodes)
+    def show(self):
+        return self.tableview
 
-    # Retrieve the number of downloads
-    nodes = get_number_of_pypi_downloads(nodes)
 
-    # Initialize the network and colors
-    if dark_background:
-        edge_color = "lightblue"
-        if color_palette is None:
-            color_palette = palette.cartocolors.qualitative.Pastel_4.hex_colors
-        nt = Network('1000px', '1500px', notebook=True, bgcolor='black', font_color='white', directed=directed_graph)
-    else:
-        edge_color = "grey"
-        nt = Network('1000px', '1500px', notebook=True, directed=directed_graph)
+class Ecosystem:
+    def __init__(self, plot_type="all", keep_all=False):
+        """
+        A class for parsing and visualization information about Python GIS ecosystem
 
-        # Use the first 4 colours from GrandBudapest5_5 which gives quite nice appearance
-        if color_palette is None:
-            color_palette = palette.wesanderson.GrandBudapest5_5.hex_colors
+        Parameters
+        ==========
 
-    # Gravity model
-    nt.force_atlas_2based(central_gravity=0.02, overlap=0.3)
+        plot_type : str
+            This can be used to specify if you want to plot all packages in same figure, or only vector or raster.
+            Possible values are: "all", "vector", "raster", "generic", "vector+generic", "raster+generic".
+        keep_all : bool
+            If True, also packages that are not available from PyPi or which are not maintained will be kept.
+        """
+        self.nodes = None
+        self.edges = None
+        self.plot_type = plot_type
+        self.keep_all = keep_all
 
-    # Prepare the plot
-    nt = prepare_network_plot(nt, nodes, edges, plot_type, label_fontsize, font_family, edge_color, color_palette)
+    def prepare_data(self, parse_urls=False):
+        """Loads the data and filters it if needed."""
+        # Load nodes and edges
+        nodes, edges = load_nodes_and_edges()
 
-    if show_buttons:
-        nt.show_buttons(filter_=['physics', 'nodes'])
-    return nt
+        # Assign categories
+        nodes = assign_categories(nodes)
+
+        if self.plot_type == "all":
+            pass
+        elif self.plot_type.lower() == "vector":
+            nodes = nodes.loc[nodes["subcategory"].isin(["vector"])].copy()
+        elif self.plot_type.lower() == "raster":
+            nodes = nodes.loc[nodes["subcategory"].isin(["raster"])].copy()
+        elif self.plot_type.lower() == "generic":
+            nodes = nodes.loc[nodes["subcategory"].isin(["generic"])].copy()
+        elif self.plot_type.lower() == "vector+generic":
+            nodes = nodes.loc[nodes["subcategory"].isin(["vector", "generic"])].copy()
+        elif self.plot_type.lower() == "raster+generic":
+            nodes = nodes.loc[nodes["subcategory"].isin(["raster", "generic"])].copy()
+        else:
+            raise ValueError(f"'plot_type' can be 'all', 'vector', 'raster', 'vector+generic', "
+                             f"or 'raster+generic'. Got: {self.plot_type}")
+
+        # Drop packages that are not available from PyPi or which are not active
+        if not self.keep_all:
+            nodes = clean_nodes(nodes)
+
+        # Retrieve the number of downloads
+        if "downloads" not in nodes.columns.to_list():
+            nodes = get_number_of_pypi_downloads(nodes)
+
+        # Retrieve the project URLs (homepage and docs URL)
+        if parse_urls:
+            nodes = get_project_urls(nodes)
+
+        # Update attributes
+        self.nodes = nodes
+        self.edges = edges
+
+    def prepare_net(self,
+                    dark_background=False,
+                    directed_graph=True,
+                    label_fontsize=24,
+                    font_family="verdana",
+                    color_palette=None,
+                    show_buttons=False,
+                    ):
+        """
+        Prepares a pyvis.Network for the Python GIS libraries that are currently listed in pygieons.
+
+        Parameters
+        ==========
+
+        directed_graph : bool
+            Treat the network as directed. If True, will add arrows showing the direction of the link.
+        dark_background : bool
+            If True, will produce the visualization with dark background.
+        label_fontsize : int
+            Fontsize for the labels.
+        font_family : str
+            Font family applied to labels. Possible values "arial", "verdana", "tahoma".
+        color_palette : list of hex colors
+            By default the color are based on palettable color schemes, but you can customize the colors by passing a list of
+            four colors as hex codes.
+        show_buttons : bool
+            If True, adds a control panel underneath the visualization which allows you to play around with different settings for the graph.
+        """
+
+        # Parse data
+        if self.nodes is None:
+            self.prepare_data(parse_urls=False)
+
+        # ===============
+        # PARAMS
+        # ===============
+
+        # Initialize the network and colors
+        if dark_background:
+            edge_color = "lightblue"
+            if color_palette is None:
+                color_palette = palette.cartocolors.qualitative.Pastel_4.hex_colors
+            nt = Network('1000px', '1500px', notebook=True, bgcolor='black', font_color='white',
+                         directed=directed_graph)
+        else:
+            edge_color = "grey"
+            nt = Network('1000px', '1500px', notebook=True, directed=directed_graph)
+
+            # Use the first 4 colours from GrandBudapest5_5 which gives quite nice appearance
+            if color_palette is None:
+                color_palette = palette.wesanderson.GrandBudapest5_5.hex_colors
+
+        # Gravity model
+        nt.force_atlas_2based(central_gravity=0.02, overlap=0.3)
+
+        # Prepare the plot
+        nt = prepare_network_plot(nt,
+                                  self.nodes,
+                                  self.edges,
+                                  label_fontsize,
+                                  font_family,
+                                  edge_color,
+                                  color_palette
+                                  )
+
+        if show_buttons:
+            nt.show_buttons(filter_=['physics', 'nodes'])
+        return nt
+
+    def prepare_table(self,
+                      cols=[
+                          "Name",
+                          "Homepage",
+                          "Documentation",
+                          "PyPi version",
+                          "PyPi downloads (monthly)",
+                          "Conda-forge version",
+                          "Conda-forge downloads",
+                          "Conda-forge latest release"
+                      ]
+                      ):
+        """
+        Prepares a pandas.HTML table for the Python GIS libraries that are currently listed in pygieons.
+
+        Parameters
+        ==========
+
+        cols : list
+            A list of attributes that will be shown in the output table.
+            By default, prints out statistics and information both for PyPi and Conda-forge.
+        """
+        # Parse data
+        if self.nodes is None:
+            self.prepare_data(parse_urls=True)
+
+        elif "Homepage" not in self.nodes.columns.to_list():
+            self.prepare_data(parse_urls=True)
+
+        # Prepare links and badges
+        self.nodes = prepare_html_links_and_badges(self.nodes)
+
+        # Prepare table
+        return Table(prepare_table_plot(self.nodes, cols))
