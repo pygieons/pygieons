@@ -66,13 +66,13 @@ html_theme_options = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
+html_static_path = ['_static']
 
 # include __init__() in API doc
 autoclass_content = 'init'
 
 # Always execute the notebooks to keep the packages on the website up-to-date
-jupyter_execute_notebooks = "force"
+jupyter_execute_notebooks = "auto"
 
 # Hide title in left navbar
 html_title = "Python OS Ecosystem for GIS and Earth Observation"
