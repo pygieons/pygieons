@@ -405,7 +405,7 @@ class Ecosystem:
         self.keep_all = keep_all
         self.log = log
 
-    def prepare_data(self, parse_urls=False):
+    def prepare_data(self, parse_urls=False, sleep_time=0.5):
         """Loads the data and filters it if needed."""
         # Load nodes and edges
         nodes, edges = load_nodes_and_edges()
@@ -435,7 +435,7 @@ class Ecosystem:
 
         # Retrieve the number of downloads
         if "downloads" not in nodes.columns.to_list():
-            nodes = get_number_of_pypi_downloads(nodes, log=self.log)
+            nodes = get_number_of_pypi_downloads(nodes, log=self.log, sleep_time=sleep_time)
 
         # Retrieve the project URLs (homepage and docs URL)
         if parse_urls:
