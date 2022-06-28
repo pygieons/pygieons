@@ -1,0 +1,27 @@
+name: gh-env
+
+channels:
+  - conda-forge
+
+dependencies:
+  - python=3.10
+  - beautifulsoup4
+  - ipycache
+  - ipykernel
+  - ipython
+  - ipywidgets
+  - lxml
+  - myst-nb
+  - myst-parser
+  - nbsphinx
+  - numpydoc
+  - palettable
+  - pandas
+  - requests
+  - sphinx
+  - sphinx-book-theme
+  - tqdm
+  - pip
+  - pip:
+      - "--editable=git+https://github.com/pygieons/pygieons.git#egg=pygieons"
+      - pypistats
