@@ -12,7 +12,8 @@ nbsphinx
 numpydoc
 palettable
 pandas
-pygieons
+# For now, install pygieons from source
+git+https://github.com/pygieons/pygieons
 pypistats
 requests
 Sphinx
