@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Python OS Ecosystem for GIS and Earth Observation &#8212; Python OS Ecosystem for GIS and Earth Observation</title>
+    
+  <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-book-theme.c441f2ba0852f4cabcb80105e3a46ae6.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.d3f166471bb80abb5163.js">
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.7d483ff0a819d6edff12ce0b1ead3928.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="All tools" href="all-tools.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="#">
+  
+  
+  <h1 class="site-logo" id="site-title">Python OS Ecosystem for GIS and Earth Observation</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <p class="caption collapsible-parent" role="heading">
+ <span class="caption-text">
+  Tools
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="all-tools.html">
+   All tools
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="vector-libraries.html">
+   Vector libraries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="raster-libraries.html">
+   Raster libraries
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="generic-libraries.html">
+   Generic libraries
+  </a>
+ </li>
+</ul>
+<p class="caption collapsible-parent" role="heading">
+ <span class="caption-text">
+  Maintenance
+ </span>
+</p>
+<ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="contributing.html">
+   How to contribute?
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="pygieons.html">
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     pygieons
+    </span>
+   </code>
+   documentation
+  </a>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Theme by the <a href="https://ebp.jupyterbook.org">Executable Book Project</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/index.rst.txt"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.rst</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        
+        
+        <a class="edit-button" href="https://github.com/pygieons/pygieons/edit/main/docs/index.rst"><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Edit this page"><i class="fas fa-pencil-alt"></i>suggest edit</button></a>
+    </div>
+</div>
+
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+            <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                    data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                    title="Fullscreen mode"><i
+                        class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <section id="python-os-ecosystem-for-gis-and-earth-observation">
+<h1>Python OS Ecosystem for GIS and Earth Observation<a class="headerlink" href="#python-os-ecosystem-for-gis-and-earth-observation" title="Permalink to this heading">¶</a></h1>
+<p>This website aims to list all open-source (OS) Python libraries that can be used for doing
+various operations, analyses, visualizations etc. related to GIS and Earth Observation.
+The libraries are categorized into <code class="docutils literal notranslate"><span class="pre">core</span> <span class="pre">/</span> <span class="pre">data</span> <span class="pre">structures</span></code>, <code class="docutils literal notranslate"><span class="pre">analysis</span> <span class="pre">&amp;</span> <span class="pre">modelling</span></code>, <code class="docutils literal notranslate"><span class="pre">visualization</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">data</span> <span class="pre">extraction</span> <span class="pre">/</span> <span class="pre">processing</span></code>. There are separate pages listing packages
+that are commonly used to work with vector or raster data, or which are generic packages
+(not specific to data type or GIS in general). You can browse through the website by clicking on the links
+on the left.</p>
+<figure class="align-default" id="id1">
+<a class="reference external image-reference" href="_static/pythongis-ecosystem-large.html"><img alt="_images/pythongis-ecosystem.png" src="_images/pythongis-ecosystem.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-text">Python GIS/EO ecosystem linkages (click to enlarge).</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</figcaption>
+</figure>
+<p><strong>Why?</strong> We believe it is useful to have a dedicated website providing a good overview of Python
+Ecosystem for GIS and Earth Observation with relevant information. The actual initiator for creating this website was, in fact, to support <a class="reference external" href="https://pythongis.org">pythongis.org</a> -project which is an open online book giving an <em>Introduction to Python for Geographic Data Analysis</em>. Although related, the book and this website have separate lives and are not strictly bound to each other.</p>
+<p><strong>Inspiration</strong>: This website is heavily inspired by <a class="reference external" href="http://pyviz.org">pyviz.org</a> which provides similar information related to Python
+visualization libraries. However, the websites do not have anything else in common (except the inspiration), as the underlying mechanisms
+for generating the content are totally different.</p>
+<p><strong>Acknowledgements</strong>: There are many sources for the packages listed on this website. Many people helped gathering the information by answering to a <a class="reference external" href="https://twitter.com/tenkahen/status/1538916633024073732">call on Twitter</a>. Especially useful sources of information have been earlier listings at <a class="reference external" href="https://github.com/sacridini/Awesome-Geospatial">Awesome-Geospatial</a> by Eduardo Lacerda and <a class="reference external" href="https://github.com/giswqs/python-geospatial">Python-geospatial</a> by Qiusheng Wu.</p>
+<p><strong>Please help</strong>: If you would like to help contributing to this website or maintaining the tool that make this website possible, please contact via Github. Read more from <span class="xref std std-ref">Contribution guidelines</span>. We are looking for people who would like to help maintaining this project that aims to be a tool for common use.</p>
+<p><strong>Citing and license:</strong> The tool is licensed with MIT (<a class="reference external" href="https://github.com/pygieons/pygieons/blob/main/LICENSE">read license</a>). The outputs of this tool and website can be used and are licensed under Creative Commons 4.0 BY-SA. If you use the visualizations for any purpose, please cite appropariately the source:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@article</span><span class="p">{</span><span class="n">Tenkanen_2022</span><span class="p">,</span>
+    <span class="n">author</span><span class="o">=</span><span class="p">{</span><span class="n">Tenkanen</span><span class="p">,</span> <span class="n">Henrikki</span><span class="p">},</span>
+    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="n">pygieons</span><span class="p">:</span> <span class="n">Software</span> <span class="n">to</span> <span class="n">visualize</span> <span class="n">Python</span> <span class="n">OS</span> <span class="n">Ecosystem</span> <span class="k">for</span> <span class="n">GIS</span> <span class="ow">and</span> <span class="n">Earth</span> <span class="n">Observation</span><span class="p">},</span>
+    <span class="n">journal</span><span class="o">=</span><span class="p">{</span><span class="n">URL</span><span class="p">:</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">pygieons</span><span class="o">/</span><span class="n">pygieons</span><span class="p">},</span>
+    <span class="n">year</span><span class="o">=</span><span class="p">{</span><span class="mi">2022</span><span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Tools</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="all-tools.html">All tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="all-tools.html#libraries">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="all-tools.html#linkages">Linkages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vector-libraries.html">Vector libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vector-libraries.html#libraries">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vector-libraries.html#linkages">Linkages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="raster-libraries.html">Raster libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="raster-libraries.html#libraries">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="raster-libraries.html#linkages">Linkages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generic-libraries.html">Generic libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generic-libraries.html#libraries">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic-libraries.html#linkages">Linkages</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Maintenance</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">How to contribute?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#how-does-it-work">How does it work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#do-you-have-an-issue-or-an-idea">Do you have an issue or an idea?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#how-to-suggest-a-new-package-to-the-website">How to suggest a new package to the website?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contributing.html#how-to-help-with-improving-maintaining-the-pygieons-library">How to help with improving/maintaining the <code class="docutils literal notranslate"><span class="pre">pygieons</span></code> library?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pygieons.html"><code class="docutils literal notranslate"><span class="pre">pygieons</span></code> documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pygieons.html#what-is-pygieons">What is <code class="docutils literal notranslate"><span class="pre">pygieons</span></code>?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygieons.html#basic-usage">Basic usage</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='right-next' id="next-link" href="all-tools.html" title="next page">All tools</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By pygieons contributors<br/>
+        
+            &copy; Copyright 2022, pygieons contributors.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>
