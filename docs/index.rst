@@ -9,20 +9,36 @@ that are commonly used to work with vector or raster data, or which are generic 
 (not specific to data type or GIS in general). You can browse through the website by clicking on the links
 on the left.
 
-**Why?** The origin of this website was to support `pythongis.org <https://pythongis.org>`_ -project which is an open online book giving an
-*Introduction to Python for Geographic Data Analysis*. However, the book and this website have separate lives
-and are not strictly bound to each other. We believe it is useful to have a dedicated website providing a good overview of Python
-Ecosystem for GIS and Earth Observation with relevant information.
+.. figure:: pythongis-ecosystem.png
+   :width: 70%
+   :target: _static/pythongis-ecosystem-large.html
+
+   Python GIS/EO ecosystem linkages (click to enlarge).
+
+
+**Why?** We believe it is useful to have a dedicated website providing a good overview of Python
+Ecosystem for GIS and Earth Observation with relevant information. However, the origin of this website (*the initiator*) was to support `pythongis.org <https://pythongis.org>`_ -project which is an open online book giving an *Introduction to Python for Geographic Data Analysis*. However, the book and this website have separate lives and are not strictly bound to each other. 
 
 **Inspiration**: This website is heavily inspired by `pyviz.org <http://pyviz.org>`_ which provides similar information related to Python
 visualization libraries. However, the websites do not have anything else in common (except the inspiration), as the underlying mechanisms
 for generating the content are totally different.
 
-.. figure:: pythongis-ecosystem.png
-   :width: 80%
-   :target: _static/pythongis-ecosystem-large.html
+**Acknowledgements**: There are many sources for the packages listed on this website. Many people helped gathering the information by answering to a `call on Twitter <https://twitter.com/tenkahen/status/1538916633024073732>`_. Especially useful sources of information have been earlier listings at `Awesome-Geospatial <https://github.com/sacridini/Awesome-Geospatial>`_ by Eduardo Lacerda and `Python-geospatial <https://github.com/giswqs/python-geospatial>`_ by Qiusheng Wu. 
 
-   Python GIS/EO ecosystem linkages (click to enlarge).
+**Please help**: If you would like to help contributing to this website or maintaining the tool that make this website possible, please contact via Github. Read more from `Contribution guidelines <contributing.ipynb>`. We are looking for people who would like to help maintaining this project that aims to be a tool for common use.
+
+**Citing and license:** The tool is licensed with MIT (`read license <https://github.com/pygieons/pygieons/blob/main/LICENSE>`_). The outputs of this tool and website can be used and are licensed under Creative Commons 4.0 BY-SA. If you use the visualizations for any purpose, please cite appropariately the source:
+
+.. code:: 
+
+    @article{Tenkanen_2022,
+        author={Tenkanen, Henrikki},
+        title={pygieons: Software to visualize Python OS Ecosystem for GIS and Earth Observation},
+        journal={URL: https://github.com/pygieons/pygieons},
+        year={2022},
+    }
+
+
 
 .. toctree::
    :maxdepth: 2
@@ -38,4 +54,5 @@ for generating the content are totally different.
    :caption: Maintenance
 
    contributing.ipynb
+   pygieons.ipynb
    
