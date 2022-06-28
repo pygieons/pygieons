@@ -65,7 +65,7 @@ def assign_categories(nodes):
     return nodes
 
 
-def get_number_of_pypi_downloads(nodes, sleep_time=0.25, log=True):
+def get_number_of_pypi_downloads(nodes, sleep_time=0.5, log=True):
     """Finds out the number of monthly downloads according to pypistats"""
     disable = True
     if log:
