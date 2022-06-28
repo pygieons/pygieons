@@ -89,11 +89,11 @@ def get_number_of_pypi_downloads(nodes, sleep_time=0.25, log=True):
     return nodes
 
 
-def get_project_urls(nodes, log=True):
-    """Finds out the Home and Documentation URLs from PyPi project page"""
+def get_project_details(nodes, log=True):
+    """Finds out the Home and Documentation URLs and project description from PyPi project page"""
     disable = True
     if log:
-        print("Extract project URLs ..")
+        print("Extract project details ..")
         disable = False
 
     for idx, node in tqdm(nodes.iterrows(), total=nodes.shape[0], disable=disable):
@@ -127,6 +127,11 @@ def get_project_urls(nodes, log=True):
             nodes.loc[idx, "Documentation"] = f'<a href="{docs_url}">📖</a>'
         else:
             nodes.loc[idx, "Documentation"] = 'NA'
+
+        # Project description
+        description = soup.find("p", {'class': "package-description__summary"}).text
+        nodes.loc[idx, "Info"] = f'<span title="{description}"><strong>ⓘ</strong></span>'
+
         time.sleep(0.25)
     return nodes
 
@@ -302,7 +307,17 @@ def prepare_table_plot(nodes, cols):
     if "Documentation" in cols:
         align_center_cols.append("Documentation")
 
-    return HTML(nodes[cols].style.set_properties(subset=align_center_cols, **{"text-align": "center"})
+    # Set tooltips
+    if "Info" in cols:
+        ttips = pd.DataFrame(data=nodes.Info, columns=["Info"], index=nodes.index)
+        return HTML(nodes[cols].style
+                    .set_properties(subset=align_center_cols, **{"text-align": "center"})
+                    .hide(axis="index")
+                    .set_tooltips(ttips)
+                    .to_html()
+                    )
+    return HTML(nodes[cols].style
+                .set_properties(subset=align_center_cols, **{"text-align": "center"})
                 .hide(axis="index")
                 .to_html()
                 )
@@ -385,7 +400,7 @@ class Ecosystem:
 
         # Retrieve the project URLs (homepage and docs URL)
         if parse_urls:
-            nodes = get_project_urls(nodes, log=self.log)
+            nodes = get_project_details(nodes, log=self.log)
 
         # Update attributes
         self.nodes = nodes
@@ -470,6 +485,7 @@ class Ecosystem:
                       cols=[
                           "Name",
                           "Homepage",
+                          "Info",
                           "License",
                           "PyPi version",
                           "PyPi downloads (monthly)",
