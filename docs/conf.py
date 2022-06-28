@@ -72,7 +72,7 @@ html_static_path = ['_static']
 autoclass_content = 'init'
 
 # Always execute the notebooks to keep the packages on the website up-to-date
-jupyter_execute_notebooks = "auto"
+jupyter_execute_notebooks = "force"
 
 # Hide title in left navbar
 html_title = "Python OS Ecosystem for GIS and Earth Observation"
