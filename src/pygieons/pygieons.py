@@ -148,17 +148,17 @@ def prepare_html_links_and_badges(nodes):
                                                           f'alt="PyPI downloads" height="18"></a>')
     nodes["Conda-forge version"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
                                                                f'<img src="{conda_root}/{x}/badges/version.svg" '
-                                                               f'alt="Conda version" height="18"></a>')
+                                                               f'alt="Conda version"></a>')
     nodes["Conda-forge downloads"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
                                                                  f'<img src="{conda_root}/{x}/badges/downloads.svg" '
-                                                                 f'alt="Conda downloads" height="18"></a>')
+                                                                 f'alt="Conda downloads"></a>')
     nodes["Conda-forge latest release"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
                                                                       f'<img src="{conda_root}/{x}/badges/latest_release_date.svg" '
-                                                                      f'alt="Conda latest release" height="18"></a>')
+                                                                      f'alt="Conda latest release"></a>')
 
     nodes["License"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
                                                    f'<img src="{conda_root}/{x}/badges/license.svg" '
-                                                   f'alt="License" height="18"></a>')
+                                                   f'alt="License"></a>')
 
     nodes["Name"] = "<strong>" + nodes["id"] + "</strong>"
 
@@ -297,7 +297,7 @@ def prepare_table_plot(nodes, cols):
         align_center_cols.append("Documentation")
 
     return HTML(nodes[cols].style.set_properties(subset=align_center_cols, **{"text-align": "center"})
-                .hide_index()
+                .hide(axis="index")
                 .to_html()
                 )
 

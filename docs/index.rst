@@ -1,5 +1,5 @@
-GeoPython Universe
-==================
+Python OS Ecosystem for GIS and Earth Observation
+=================================================
 
 .. raw:: html
    :file: pythongis-ecosystem.html

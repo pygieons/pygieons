@@ -75,4 +75,4 @@ autoclass_content = 'init'
 jupyter_execute_notebooks = "force"
 
 # Hide title in left navbar
-html_title = "GeoPython Universe"
+html_title = "Python OS Ecosystem for GIS and Earth Observation"
