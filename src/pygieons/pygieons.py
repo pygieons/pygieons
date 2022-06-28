@@ -335,11 +335,12 @@ def prepare_table_plot(nodes, cols):
         ttips = pd.DataFrame(data=nodes.Info, columns=["Info"], index=nodes.index)
         html_stack = []
         for name, rows in grouped:
+            count = len(rows)
             html_stack.append(
                 (rows[cols].style
                  .set_properties(subset=align_center_cols, **{"text-align": "center"})
                  .hide(axis="index")
-                 .set_caption(f"<strong>{name.capitalize()}</strong>")
+                 .set_caption(f"<strong>{name.capitalize()}</strong> (count={count})")
                  .set_tooltips(ttips)
                  .set_table_styles(style_props)
                  .to_html())
@@ -349,11 +350,12 @@ def prepare_table_plot(nodes, cols):
 
     html_stack = []
     for name, rows in grouped:
+        count = len(rows)
         html_stack.append(
             (rows[cols].style
              .set_properties(subset=align_center_cols, **{"text-align": "center"})
              .hide(axis="index")
-             .set_caption(f"<strong>{name.capitalize()}</strong>")
+             .set_caption(f"<strong>{name.capitalize()}</strong> (count={count})")
              .set_table_styles(style_props)
              .to_html())
         )
