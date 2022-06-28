@@ -21,8 +21,8 @@ from .ecosystem_pkgs import (PKGS,
                              GIS_CORE,
                              GENERIC_VISUALS,
                              NOT_ACTIVE,
-                             PYGIS_CORE,
-                             FUNDAMENTAL_CORE
+                             FUNDAMENTAL_CORE,
+                             NO_CONDA_FORGE_DISTRO,
                              )
 
 # These packages won't be plotted
@@ -159,6 +159,12 @@ def prepare_html_links_and_badges(nodes):
     nodes["License"] = nodes['id'].apply(lambda x: f'<a href="{conda_root}/{x}/">'
                                                    f'<img src="{conda_root}/{x}/badges/license.svg" '
                                                    f'alt="License"></a>')
+
+    # If package is not available on conda-forge remove badge
+    nodes.loc[nodes["id"].isin(NO_CONDA_FORGE_DISTRO), "Conda-forge version"] = "NA"
+    nodes.loc[nodes["id"].isin(NO_CONDA_FORGE_DISTRO), "Conda-forge downloads"] = "NA"
+    nodes.loc[nodes["id"].isin(NO_CONDA_FORGE_DISTRO), "Conda-forge latest release"] = "NA"
+    nodes.loc[nodes["id"].isin(NO_CONDA_FORGE_DISTRO), "License"] = "NA"
 
     nodes["Name"] = "<strong>" + nodes["id"] + "</strong>"
 

@@ -72,6 +72,10 @@ EARLY_DEV = ["easystack", "r5py"]
 # External or generic "language-independent" libraries (bindings for Python)
 EXTERNAL = ['GDAL', 'GEOS', 'PDAL', 'pyarrow', 'pygmt', 'simpleitk', 'whitebox']
 
+# Packages without conda distribution
+NO_CONDA_FORGE_DISTRO = ["cuspatial", "mesa-geo", "pandas-bokeh", "pyinterpolate", "snkit", "trackintel", "vizent",
+                         "pyspatialml", "rio-hist", "cudf"]
+
 # --------------------
 # Combine packages
 # --------------------
