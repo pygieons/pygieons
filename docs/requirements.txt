@@ -4,7 +4,6 @@ ipykernel
 ipython
 ipython-genutils
 ipywidgets
-jupyter-book>=0.7.0b
 lxml
 myst-nb
 myst-parser
@@ -16,7 +15,7 @@ pandas
 git+https://github.com/pygieons/pygieons
 pypistats
 requests
-Sphinx
+Sphinx==4.5.0
 sphinx-book-theme
 sphinx-togglebutton
 sphinx_copybutton
