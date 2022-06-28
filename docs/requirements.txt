@@ -8,6 +8,7 @@ lxml
 myst-nb
 myst-parser
 nbsphinx
+MarkupSafe==2.0.1
 numpydoc
 palettable
 pandas
