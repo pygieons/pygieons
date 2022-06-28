@@ -1511,6 +1511,9 @@
     "# Initialize\n",
     "e = Ecosystem(log=False)\n",
     "\n",
+    "# Prepare data enough wait time between pypistat calls\n",
+    "e.prepare_data(sleep_time=1)\n",
+    "\n",
     "# Prepare the table and plot it\n",
     "e.prepare_table().show()"
    ]
