@@ -18,13 +18,4 @@ pypistats
 requests
 Sphinx
 sphinx-book-theme
-sphinx-togglebutton
-sphinx_copybutton
-sphinxcontrib-applehelp
-sphinxcontrib-devhelp
-sphinxcontrib-htmlhelp
-sphinxcontrib-jsmath
-sphinxcontrib-qthelp
-sphinxcontrib-serializinghtml
-sphinxcontrib.bibtex
 tqdm
