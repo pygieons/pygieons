@@ -25,7 +25,7 @@ for generating the content are totally different.
 
 **Acknowledgements**: There are many sources for the packages listed on this website. Many people helped gathering the information by answering to a `call on Twitter <https://twitter.com/tenkahen/status/1538916633024073732>`_. Especially useful sources of information have been earlier listings at `Awesome-Geospatial <https://github.com/sacridini/Awesome-Geospatial>`_ by Eduardo Lacerda and `Python-geospatial <https://github.com/giswqs/python-geospatial>`_ by Qiusheng Wu. 
 
-**Please help**: If you would like to help contributing to this website or maintaining the tool that make this website possible, please contact via Github. Read more from `Contribution guidelines <contributing.ipynb>`. We are looking for people who would like to help maintaining this project that aims to be a tool for common use.
+**Please help**: If you would like to help contributing to this website or maintaining the tool that make this website possible, please contact via Github. Read more from :ref:`Contribution guidelines <contributing>`. We are looking for people who would like to help maintaining this project that aims to be a tool for common use.
 
 **Citing and license:** The tool is licensed with MIT (`read license <https://github.com/pygieons/pygieons/blob/main/LICENSE>`_). The outputs of this tool and website can be used and are licensed under Creative Commons 4.0 BY-SA. If you use the visualizations for any purpose, please cite appropariately the source:
 
