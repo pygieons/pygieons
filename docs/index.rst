@@ -17,7 +17,7 @@ on the left.
 
 
 **Why?** We believe it is useful to have a dedicated website providing a good overview of Python
-Ecosystem for GIS and Earth Observation with relevant information. However, the origin of this website (*the initiator*) was to support `pythongis.org <https://pythongis.org>`_ -project which is an open online book giving an *Introduction to Python for Geographic Data Analysis*. However, the book and this website have separate lives and are not strictly bound to each other. 
+Ecosystem for GIS and Earth Observation with relevant information. The actual initiator for creating this website was, in fact, to support `pythongis.org <https://pythongis.org>`_ -project which is an open online book giving an *Introduction to Python for Geographic Data Analysis*. Although related, the book and this website have separate lives and are not strictly bound to each other. 
 
 **Inspiration**: This website is heavily inspired by `pyviz.org <http://pyviz.org>`_ which provides similar information related to Python
 visualization libraries. However, the websites do not have anything else in common (except the inspiration), as the underlying mechanisms
