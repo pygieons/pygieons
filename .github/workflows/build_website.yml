@@ -27,6 +27,8 @@ jobs:
         shell: bash -l {0}
         continue-on-error: false
         run: |
+          cd docs
+          make clean
           make html
 
       - name: Commit documentation changes
