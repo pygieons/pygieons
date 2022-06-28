@@ -6,9 +6,16 @@ Python OS Ecosystem for GIS and Earth Observation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
+   :caption: Tools
 
+   all-tools.ipynb
    vector-libraries.ipynb
    raster-libraries.ipynb
    generic-libraries.ipynb
+   
+.. toctree::
+   :maxdepth: 2
+   :caption: Maintenance
+
+   contributing.ipynb
    
