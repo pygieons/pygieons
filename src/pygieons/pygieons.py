@@ -311,19 +311,19 @@ def prepare_table_plot(nodes, cols):
     # Style properties
     style_props = [
         # Column headers
-        dict(selector="th", props=[("font-size", "105%"),
+        dict(selector="th", props=[("font-size", "100%"),
                                    ("text-align", "center"),
                                    ("background-color", "#F0F3CF"),
                                    ]),
         # Table titles
         dict(selector="caption", props=[("caption-side", "top"),
-                                        ("font-size", "150%"),
+                                        ("font-size", "130%"),
                                         ("font-weight", "bold"),
                                         ("text-align", "left"),
                                         ('height', '50px'),
                                         ('color', 'black')]),
         # Table content text
-        dict(selector="td", props=[("font-size", "95%"),
+        dict(selector="td", props=[("font-size", "90%"),
                                    ("text-align", "center"),
                                    ]),
 
