@@ -20,7 +20,6 @@ jobs:
           miniforge-variant: Mambaforge
           use-mamba: true
           auto-activate-base: false
-          python-version: 3.10
           environment-file: ci/environment.yaml
           activate-environment: gh-env
 

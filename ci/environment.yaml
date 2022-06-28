@@ -23,5 +23,5 @@ dependencies:
   - tqdm
   - pip
   - pip:
-    - pygieons
+    - "--editable=git+https://github.com/pygieons/pygieons.git#egg=pygieons"
     - pypistats
