@@ -113,7 +113,6 @@ def get_project_details(nodes, log=True):
         project_links = soup.find_all("div", {'class': 'sidebar-section'})[1].find_all("a", href=True)
         homepage = None
         docs_url = None
-        description = "NA"
 
         for link in project_links:
             if link.text.strip().lower().startswith("home"):
