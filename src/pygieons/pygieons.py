@@ -308,20 +308,57 @@ def prepare_table_plot(nodes, cols):
     if "Documentation" in cols:
         align_center_cols.append("Documentation")
 
+    # Style properties
+    style_props = [
+        # Column headers
+        dict(selector="th", props=[("font-size", "105%"),
+                                   ("text-align", "center"),
+                                   ("background-color", "#F0F3CF"),
+                                   ]),
+        # Table titles
+        dict(selector="caption", props=[("caption-side", "top"),
+                                        ("font-size", "150%"),
+                                        ("font-weight", "bold"),
+                                        ("text-align", "left"),
+                                        ('height', '50px'),
+                                        ('color', 'black')]),
+        # Table content text
+        dict(selector="td", props=[("font-size", "95%"),
+                                   ("text-align", "center"),
+                                   ]),
+
+    ]
+    # Generate tables from subcategories
+    grouped = nodes.groupby("category")
+
     # Set tooltips
     if "Info" in cols:
         ttips = pd.DataFrame(data=nodes.Info, columns=["Info"], index=nodes.index)
-        return HTML(nodes[cols].style
-                    .set_properties(subset=align_center_cols, **{"text-align": "center"})
-                    .hide(axis="index")
-                    .set_tooltips(ttips)
-                    .to_html()
-                    )
-    return HTML(nodes[cols].style
-                .set_properties(subset=align_center_cols, **{"text-align": "center"})
-                .hide(axis="index")
-                .to_html()
-                )
+        html_stack = []
+        for name, rows in grouped:
+            html_stack.append(
+                (rows[cols].style
+                 .set_properties(subset=align_center_cols, **{"text-align": "center"})
+                 .hide(axis="index")
+                 .set_caption(f"<strong>{name.capitalize()}</strong>")
+                 .set_tooltips(ttips)
+                 .set_table_styles(style_props)
+                 .to_html())
+            )
+
+        return HTML("".join(html_stack))
+
+    html_stack = []
+    for name, rows in grouped:
+        html_stack.append(
+            (rows[cols].style
+             .set_properties(subset=align_center_cols, **{"text-align": "center"})
+             .hide(axis="index")
+             .set_caption(f"<strong>{name.capitalize()}</strong>")
+             .set_table_styles(style_props)
+             .to_html())
+        )
+    return HTML("".join(html_stack))
 
 
 class Table:
