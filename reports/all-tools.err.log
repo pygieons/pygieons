@@ -1,0 +1,79 @@
+Traceback (most recent call last):
+  File "/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/jupyter_cache/executors/utils.py", line 58, in single_nb_execution
+    executenb(
+  File "/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/nbclient/client.py", line 1204, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/nbclient/util.py", line 84, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/nbclient/util.py", line 62, in just_run
+    return loop.run_until_complete(coro)
+  File "/usr/share/miniconda3/envs/gh-env/lib/python3.9/asyncio/base_events.py", line 642, in run_until_complete
+    return future.result()
+  File "/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/nbclient/client.py", line 663, in async_execute
+    await self.async_execute_cell(
+  File "/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/nbclient/client.py", line 965, in async_execute_cell
+    await self._check_raise_for_error(cell, cell_index, exec_reply)
+  File "/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/nbclient/client.py", line 862, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from pygieons import Ecosystem
+
+# Initialize
+e = Ecosystem(log=False)
+
+# Prepare the table and plot it
+e.prepare_table().show()
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mHTTPStatusError[0m                           Traceback (most recent call last)
+Input [0;32mIn [1][0m, in [0;36m<cell line: 7>[0;34m()[0m
+[1;32m      4[0m e [38;5;241m=[39m Ecosystem(log[38;5;241m=[39m[38;5;28;01mFalse[39;00m)
+[1;32m      6[0m [38;5;66;03m# Prepare the table and plot it[39;00m
+[0;32m----> 7[0m [43me[49m[38;5;241;43m.[39;49m[43mprepare_table[49m[43m([49m[43m)[49m[38;5;241m.[39mshow()
+
+File [0;32m~/work/pygieons/pygieons/ci/src/pygieons/src/pygieons/pygieons.py:548[0m, in [0;36mEcosystem.prepare_table[0;34m(self, cols)[0m
+[1;32m    546[0m [38;5;66;03m# Parse data[39;00m
+[1;32m    547[0m [38;5;28;01mif[39;00m [38;5;28mself[39m[38;5;241m.[39mnodes [38;5;129;01mis[39;00m [38;5;28;01mNone[39;00m:
+[0;32m--> 548[0m     [38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mprepare_data[49m[43m([49m[43mparse_urls[49m[38;5;241;43m=[39;49m[38;5;28;43;01mTrue[39;49;00m[43m)[49m
+[1;32m    550[0m [38;5;28;01melif[39;00m [38;5;124m"[39m[38;5;124mHomepage[39m[38;5;124m"[39m [38;5;129;01mnot[39;00m [38;5;129;01min[39;00m [38;5;28mself[39m[38;5;241m.[39mnodes[38;5;241m.[39mcolumns[38;5;241m.[39mto_list():
+[1;32m    551[0m     [38;5;28mself[39m[38;5;241m.[39mprepare_data(parse_urls[38;5;241m=[39m[38;5;28;01mTrue[39;00m)
+
+File [0;32m~/work/pygieons/pygieons/ci/src/pygieons/src/pygieons/pygieons.py:438[0m, in [0;36mEcosystem.prepare_data[0;34m(self, parse_urls)[0m
+[1;32m    436[0m [38;5;66;03m# Retrieve the number of downloads[39;00m
+[1;32m    437[0m [38;5;28;01mif[39;00m [38;5;124m"[39m[38;5;124mdownloads[39m[38;5;124m"[39m [38;5;129;01mnot[39;00m [38;5;129;01min[39;00m nodes[38;5;241m.[39mcolumns[38;5;241m.[39mto_list():
+[0;32m--> 438[0m     nodes [38;5;241m=[39m [43mget_number_of_pypi_downloads[49m[43m([49m[43mnodes[49m[43m,[49m[43m [49m[43mlog[49m[38;5;241;43m=[39;49m[38;5;28;43mself[39;49m[38;5;241;43m.[39;49m[43mlog[49m[43m)[49m
+[1;32m    440[0m [38;5;66;03m# Retrieve the project URLs (homepage and docs URL)[39;00m
+[1;32m    441[0m [38;5;28;01mif[39;00m parse_urls:
+
+File [0;32m~/work/pygieons/pygieons/ci/src/pygieons/src/pygieons/pygieons.py:81[0m, in [0;36mget_number_of_pypi_downloads[0;34m(nodes, sleep_time, log)[0m
+[1;32m     79[0m [38;5;28;01mif[39;00m name [38;5;129;01min[39;00m NO_DISTRO:
+[1;32m     80[0m     [38;5;28;01mcontinue[39;00m
+[0;32m---> 81[0m r [38;5;241m=[39m [43mpypistats[49m[38;5;241;43m.[39;49m[43mrecent[49m[43m([49m[43mname[49m[43m,[49m[43m [49m[38;5;124;43m"[39;49m[38;5;124;43mmonth[39;49m[38;5;124;43m"[39;49m[43m,[49m[43m [49m[38;5;28;43mformat[39;49m[38;5;241;43m=[39;49m[38;5;124;43m"[39;49m[38;5;124;43mjson[39;49m[38;5;124;43m"[39;49m[43m)[49m
+[1;32m     82[0m downloads [38;5;241m=[39m json[38;5;241m.[39mloads(r)[[38;5;124m"[39m[38;5;124mdata[39m[38;5;124m"[39m][[38;5;124m"[39m[38;5;124mlast_month[39m[38;5;124m"[39m]
+[1;32m     83[0m nodes[38;5;241m.[39mloc[idx, [38;5;124m"[39m[38;5;124mPyPi downloads (monthly)[39m[38;5;124m"[39m] [38;5;241m=[39m downloads
+
+File [0;32m/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/pypistats/__init__.py:487[0m, in [0;36mrecent[0;34m(package, period, **kwargs)[0m
+[1;32m    485[0m endpoint [38;5;241m=[39m [38;5;124mf[39m[38;5;124m"[39m[38;5;124mpackages/[39m[38;5;132;01m{[39;00mpackage[38;5;132;01m}[39;00m[38;5;124m/recent[39m[38;5;124m"[39m
+[1;32m    486[0m params [38;5;241m=[39m _paramify([38;5;124m"[39m[38;5;124mperiod[39m[38;5;124m"[39m, period)
+[0;32m--> 487[0m [38;5;28;01mreturn[39;00m [43mpypi_stats_api[49m[43m([49m[43mendpoint[49m[43m,[49m[43m [49m[43mparams[49m[43m,[49m[43m [49m[38;5;241;43m*[39;49m[38;5;241;43m*[39;49m[43mkwargs[49m[43m)[49m
+
+File [0;32m/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/pypistats/__init__.py:125[0m, in [0;36mpypi_stats_api[0;34m(endpoint, params, format, start_date, end_date, sort, total, color, verbose)[0m
+[1;32m    122[0m [38;5;66;03m# Raise if we made a bad request[39;00m
+[1;32m    123[0m [38;5;66;03m# (4XX client error or 5XX server error response)[39;00m
+[1;32m    124[0m _print_verbose(verbose, [38;5;124m"[39m[38;5;124mHTTP status code:[39m[38;5;124m"[39m, r[38;5;241m.[39mstatus_code)
+[0;32m--> 125[0m [43mr[49m[38;5;241;43m.[39;49m[43mraise_for_status[49m[43m([49m[43m)[49m
+[1;32m    127[0m res [38;5;241m=[39m r[38;5;241m.[39mjson()
+[1;32m    129[0m _save_cache(cache_file, res)
+
+File [0;32m/usr/share/miniconda3/envs/gh-env/lib/python3.9/site-packages/httpx/_models.py:736[0m, in [0;36mResponse.raise_for_status[0;34m(self)[0m
+[1;32m    734[0m error_type [38;5;241m=[39m error_types[38;5;241m.[39mget(status_class, [38;5;124m"[39m[38;5;124mInvalid status code[39m[38;5;124m"[39m)
+[1;32m    735[0m message [38;5;241m=[39m message[38;5;241m.[39mformat([38;5;28mself[39m, error_type[38;5;241m=[39merror_type)
+[0;32m--> 736[0m [38;5;28;01mraise[39;00m HTTPStatusError(message, request[38;5;241m=[39mrequest, response[38;5;241m=[39m[38;5;28mself[39m)
+
+[0;31mHTTPStatusError[0m: Client error '429 TOO MANY REQUESTS' for url 'https://pypistats.org/api/packages/pyvista/recent?&period=month'
+For more information check: https://httpstatuses.com/429
+HTTPStatusError: Client error '429 TOO MANY REQUESTS' for url 'https://pypistats.org/api/packages/pyvista/recent?&period=month'
+For more information check: https://httpstatuses.com/429
+
