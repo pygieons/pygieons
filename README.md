@@ -10,5 +10,5 @@ A simple package to visualize and keep track of GIS and Earth Observation librar
 
 ## Documentation
 
-- Check documentation for the tool from [ReadTheDocs](https://geo-python-universe.readthedocs.io/en/latest/pygieons.html).
-- Check the website which this tool generates from [ReadTheDocs](https://geo-python-universe.readthedocs.io/en/latest/). 
+- Check documentation for the tool from [ReadTheDocs](https://pythongis-ecosystem.readthedocs.io/en/latest/pygieons.html).
+- Check the website which this tool generates from [ReadTheDocs](https://pythongis-ecosystem.readthedocs.io/en/latest/). 
