@@ -291,7 +291,7 @@ LINKS = [
     {"from": "xarray-sentinel", "to": "rioxarray"},
     {"from": "xarray-spatial", "to": "datashader"},
     {"from": "xarray-spatial", "to": "xarray"},
-    {"from": "xarray", "to": "numpy"},    {"from": "sarsen", "to": "pandas"},
+    {"from": "xarray", "to": "numpy"},
     {"from": "eoreader", "to": "rioxarray"},
     {"from": "eoreader", "to": "xarray"},
     {"from": "eoreader", "to": "rasterio"},
