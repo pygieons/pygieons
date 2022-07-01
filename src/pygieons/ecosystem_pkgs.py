@@ -73,8 +73,9 @@ EARLY_DEV = ["easystack", "r5py"]
 EXTERNAL = ["GDAL", "GEOS", "PDAL", "pyarrow", "pygmt", "simpleitk", "whitebox"]
 
 # Packages without conda distribution
-NO_CONDA_FORGE_DISTRO = ["cuspatial", "mesa-geo", "pandas-bokeh", "pyinterpolate", "snkit", "trackintel", "vizent",
-                         "pyspatialml", "rio-hist", "cudf"]
+NO_CONDA_FORGE_DISTRO = ["cudf", "cuspatial", "mesa-geo", "pandas-bokeh", "pyinterpolate", "snkit", "pyspatialml",
+                         "pyvista-xarray", "rio-hist", "trackintel", "vizent",
+                         ]
 
 # --------------------
 # Combine packages
