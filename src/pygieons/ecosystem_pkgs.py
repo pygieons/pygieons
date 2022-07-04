@@ -39,9 +39,9 @@ PKGS = {
     "data extraction / processing": {
         "generic": ['astropy', 'geocube', 'owslib', 'scikit-image', 'whitebox'],
         "vector": ['geopy', 'h3', 'osmnet', 'osmnx', 'pyntcloud', 'pyrosm', 'snkit'],
-        "raster": ['earthengine-api', 'easystac', 'eemont', 'lidar', 'odc-stac', 'planetary-computer', 'pymap3d',
+        "raster": ['earthengine-api', 'easystac', 'eemont', 'eoreader', 'lidar', 'odc-stac', 'planetary-computer', 'pymap3d',
                    'pyotb', 'pyrosar', 'pystac', 'pystac-client', 'radiant-mlhub', 'rio-hist', 'rio-mucho', 'rio-tiler',
-                   'salem', 'satpy', 'sentinelsat', 'stackstac', 'verde', 'xarray-sentinel', 'xyzservices', 'eoreader'],
+                   'salem', 'satpy', 'sentinelsat', 'stackstac', 'verde', 'xarray-sentinel', 'xyzservices'],
     }
 }
 
